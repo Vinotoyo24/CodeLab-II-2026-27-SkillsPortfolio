@@ -278,6 +278,7 @@ def UpdateRecord():
     ShowStudentsAll()
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
+# Deletes a students Name by Number ID input
 def DeleteRecord():
     dialog = simpledialog.askstring("Delete", "Enter Number ID:")
 
@@ -288,8 +289,19 @@ def DeleteRecord():
         if line.split(",")[0].strip() == dialog:
             print(lines[i])
             validate = messagebox.askyesno(title="Deleting a Record", 
-                                           message=f"Deleting Forever:\n{lines[i]}")
+                                           message=f"Deleting Forever:\n{lines[i]}\nare you sure?")
+            if validate:
+                print("Deleting")
+                del lines[i]                                        # remove the selected student line
+                lines[0] = str(len(lines) - 1)                      # fix count line
+                with open("studentMarks.txt", 'w') as filehandler:  
+                    filehandler.write("\n".join(lines) + "\n")
+                    students[:] = load_students()                   #reload 
+                    ShowStudentsAll
+            else:
+                print("Stopped")
             return
+    print(f"No Student Record Found: {dialog}")
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
 # Navigation Frame Bar --------------

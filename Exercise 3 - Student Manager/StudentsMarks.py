@@ -1,7 +1,8 @@
 # Import Necessary Libraries
 import random
 import tkinter as tk
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox, simpledialog, ttk
+
 
 # Create Root Windows and Other Window Formats Settings
 #--------------------------------------------------------------
@@ -247,6 +248,26 @@ def open_adding_window():
 
 def UpdateRecord():
     dialog = simpledialog.askstring("Update", "Entere Number ID:")
+    exam = simpledialog.askstring("Update", "New Student Name:")
+
+    with open("studentMarks.txt") as filehandler:
+        lines = filehandler.read().splitlines()
+
+    for i, line in enumerate(lines[1:], 1):
+        parts = line.split(", ")
+        if parts[0].strip() == dialog.strip():
+            parts[5] = " " + str(exam)
+            lines[i] = ", ".join(parts)
+            break
+    else:
+        messagebox.showerror("Update", "ID not found")
+        return
+
+    with open("studentMarks.txt", 'w') as filehandler:
+        filehandler.write("\n".join(lines) + "\n")
+
+    students[:] = load_students()
+    ShowStudentsAll()
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
 # Navigation Frame Bar --------------
@@ -305,6 +326,12 @@ Rlb.pack()
 #Main Text field for displaying the Records of each student details
 txtarea = tk.Text(main_frame, width=30, height=10)
 txtarea.pack(padx=10, pady=5, fill="both", expand=True)
+
+scrollV = tk.Scrollbar(main_frame, orient='vertical')
+scrollV.place(x=320, y=40, height=350)
+
+scrollV.config(command=txtarea.yview)
+txtarea.config(yscrollcommand=scrollV.set)
 
 # Runs the whole Tkinter Application Loop window
 #--------------------------------------------------------------

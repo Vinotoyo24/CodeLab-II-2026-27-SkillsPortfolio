@@ -1,7 +1,10 @@
+# Import Necessary Libraries
 import random
 import tkinter as tk
 from tkinter import messagebox
 
+# Create Root Windows and Other Window Formats Settings
+#--------------------------------------------------------------
 root = tk.Tk()
 root.title("Student Manager")
 root.geometry('500x400')
@@ -104,14 +107,23 @@ def ShowLowest():
     matches = [s for s in students if s["percentage"] == worst] # collects every student with that percentage (in case of a tie)
     show("Lowest Score", "\n".join(format_student(s) for s in matches))    # displays the matching student details
 
-
+# Tracks sorting direction
 sort_ascending = True
+
+# Toggling Sorts Students by Percentage
 def SortStudents():
     global sort_ascending
+    
     ordered = sorted(students, key=lambda s: s["percentage"], reverse=not sort_ascending)
+
+    # Label for the display title
     order = "Ascending" if sort_ascending else "Descending"
     show(f"Sorted ({order})", records_text(ordered))
+
+    #Flip the direction
     sort_ascending = not sort_ascending
+
+    # Button color according to sort direction.
     if sort_ascending:
         b5.config(bg="blue")
     else:
@@ -119,6 +131,7 @@ def SortStudents():
 #---------------------------------------------------------------------------------------------------------------------------------------------
 def open_adding_window():
 
+    # Handles in Errors according to any entry
     def show_error(entry , text="Enter a Valid Value"):
         entry.delete(0, tk.END)
         entry.insert(0, text)
@@ -192,21 +205,26 @@ def open_adding_window():
         # Appends New Student
         with open("studentMarks.txt", 'a') as file_handler:
             file_handler.write(line + "\n")
-        win.destroy()
+        win.destroy() # Closes windows after creation
 
+    # Tkinter widgets For Adding Records window
     win = tk.Toplevel(root)
     win.geometry('300x300')
 
+    # Main Label
     Lab = tk.Label(win, text="Add Student Details", font=("Roboto", 15)).pack()
 
+    # Number ID label and Text Field
     l1 = tk.Label(win, text="Number ID").pack()
     e1 = tk.Entry(win)
     e1.pack()
-    
-    l2 = tk.Label(win, text="Name").pack()
+
+    # Student Namelabel and Text Field
+    l2 = tk.Label(win, text="Student Name").pack()
     e2 = tk.Entry(win)
     e2.pack()
 
+    # Course label and 3 Text Fields
     l3 = tk.Label(win, text="Courswork").pack()
     cw_frame = tk.Frame(win)
     cw_frame.pack(pady=2)
@@ -217,10 +235,12 @@ def open_adding_window():
     c3 = tk.Entry(cw_frame, width=8)
     c3.grid(row=0, column=2, padx=3)
 
+    # Exam Marks and Text Field
     l4 = tk.Label(win, text="Exam marks").pack()
     e3 = tk.Entry(win)
     e3.pack()
 
+    # Submit to Append Button
     addB = tk.Button(win, text="Submit and Add", command=AppendToFile).pack(pady=10)
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
@@ -265,13 +285,18 @@ b6.place(x=10, y=250)
 
 
 #----------------------------------------
+# Main Area/Frame Parent
 main_frame = tk.Frame(root)
 main_frame.pack(side=tk.LEFT, fill="both", expand=True)
 
-Rlb = tk.Label(main_frame, text="Student Manager")
+#Studeent Manager Label
+Rlb = tk.Label(main_frame, text="Student Manager", font=("Roboto", 15, "bold"))
 Rlb.pack()
 
+#Main Text field for displaying the Records of each student details
 txtarea = tk.Text(main_frame, width=30, height=10)
 txtarea.pack(padx=10, pady=5, fill="both", expand=True)
 
+# Runs the whole Tkinter Application Loop window
+#--------------------------------------------------------------
 root.mainloop()

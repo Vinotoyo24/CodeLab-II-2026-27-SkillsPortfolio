@@ -246,26 +246,34 @@ def open_adding_window():
 
 #Update Functions-------------------------------------------------------------------------------------------------------------------------------------------
 
+# Updates A students Name by Number ID input
 def UpdateRecord():
-    dialog = simpledialog.askstring("Update", "Entere Number ID:")
-    exam = simpledialog.askstring("Update", "New Student Name:")
 
+    #Simple dialog to display which student, and what the new name would be
+    dialog = simpledialog.askstring("Update", "Enter Number ID:")
+    newName = simpledialog.askstring("Update", "New Student Name:")
+
+    # read external file into a list
     with open("studentMarks.txt") as filehandler:
         lines = filehandler.read().splitlines()
 
-    for i, line in enumerate(lines[1:], 1):
-        parts = line.split(", ")
-        if parts[0].strip() == dialog.strip():
-            parts[5] = " " + str(exam)
-            lines[i] = ", ".join(parts)
+    # search each record for the matchin Number ID
+    for i, line in enumerate(lines[1:], 1):             
+        parts = [p.strip() for p in line.split(",")]    # Split into fields
+        if parts[0].strip() == dialog.strip():          # Index [ID] for Number ID
+            parts[1] = newName.strip()                  #index 1 for number Name
+            lines[i] = ", ".join(parts)                 # Rebuild the line with the update Name
             break
     else:
+        # finishes the loop with an ID not being Found
         messagebox.showerror("Update", "ID not found")
         return
 
+    # Writes the modified lines back to the file
     with open("studentMarks.txt", 'w') as filehandler:
         filehandler.write("\n".join(lines) + "\n")
 
+    # Reload the student list in place and refreshes the text area
     students[:] = load_students()
     ShowStudentsAll()
 

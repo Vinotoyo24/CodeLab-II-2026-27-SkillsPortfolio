@@ -1,7 +1,7 @@
 # Import Necessary Libraries
 import random
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, simpledialog
 
 # Create Root Windows and Other Window Formats Settings
 #--------------------------------------------------------------
@@ -243,6 +243,11 @@ def open_adding_window():
     # Submit to Append Button
     addB = tk.Button(win, text="Submit and Add", command=AppendToFile).pack(pady=10)
 
+#Update Functions-------------------------------------------------------------------------------------------------------------------------------------------
+
+def UpdateRecord():
+    dialog = simpledialog.askstring("Update", "Entere Number ID:")
+
 #---------------------------------------------------------------------------------------------------------------------------------------------
 # Navigation Frame Bar --------------
 navbar_frame = tk.Frame(root, bg="#A167DC", width=150)
@@ -282,6 +287,10 @@ b5.place(x=10, y=200)
 b6 = tk.Button(navbar_frame, text="Add Student", width=16,
                command=open_adding_window)
 b6.place(x=10, y=250)
+
+b7 = tk.Button(navbar_frame, text="Update Record", width=16,
+               command=UpdateRecord)
+b7.place(x=10, y=290)
 
 
 #----------------------------------------

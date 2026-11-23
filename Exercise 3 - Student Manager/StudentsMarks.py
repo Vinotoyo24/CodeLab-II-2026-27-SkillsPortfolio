@@ -116,6 +116,103 @@ def SortStudents():
         b5.config(bg="blue")
     else:
         b5.config(bg="red")
+#---------------------------------------------------------------------------------------------------------------------------------------------
+def open_adding_window():
+
+    def show_error(entry , text="Enter a Valid Value"):
+        entry.delete(0, tk.END)
+        entry.insert(0, text)
+        entry.config(fg="red")
+
+    def AppendToFile():
+        for entry in (e1, e2, c1, c2, c3):
+            entry.config(fg="black")
+
+        try:
+            numberID = int(e1.get())
+            if not 1000 <= (numberID) <= 9999:
+                raise ValueError
+        except ValueError:
+            show_error(e1)
+            return
+
+        studentName = e2.get().strip()
+        if len(studentName) < 2:
+            show_error(e2)
+            return
+
+                # Coursework 1
+        try:
+            cw1 = int(c1.get())
+            if not 0 <= cw1 <= 20:
+                raise ValueError
+        except ValueError:
+            show_error(c1, "Invalid")
+            return
+
+        # Coursework 2
+        try:
+            cw2 = int(c2.get())
+            if not 0 <= cw2 <= 20:
+                raise ValueError
+        except ValueError:
+            show_error(c2, "Invalid")
+            return
+
+        # Coursework 3
+        try:
+            cw3 = int(c3.get())
+            if not 0 <= cw3 <= 20:
+                raise ValueError
+        except ValueError:
+            show_error(c3, "Invalid")
+            return
+
+        for entry in (e1, e2, c1, c2, c3):
+            entry.config(fg="black")
+
+        try:
+            exam = int(e3.get())
+            if not 0 <= exam <= 100:
+                raise ValueError
+        except ValueError:
+            show_error(e3)
+            return
+
+        results = [numberID, studentName, cw1, cw2, cw3, exam]
+        line = ", ".join(str(r) for r in results)
+
+        with open("studentMarks.txt", 'a') as file_handler:
+            file_handler.write(line + "\n")
+
+    win = tk.Toplevel(root)
+    win.geometry('300x300')
+
+    Lab = tk.Label(win, text="Add Student Details", font=("Roboto", 15)).pack()
+
+    l1 = tk.Label(win, text="Number ID").pack()
+    e1 = tk.Entry(win)
+    e1.pack()
+    
+    l2 = tk.Label(win, text="Name").pack()
+    e2 = tk.Entry(win)
+    e2.pack()
+
+    l3 = tk.Label(win, text="Courswork").pack()
+    cw_frame = tk.Frame(win)
+    cw_frame.pack(pady=2)
+    c1 = tk.Entry(cw_frame, width=8)
+    c1.grid(row=0, column=0, padx=3)
+    c2 = tk.Entry(cw_frame, width=8)
+    c2.grid(row=0, column=1, padx=3)
+    c3 = tk.Entry(cw_frame, width=8)
+    c3.grid(row=0, column=2, padx=3)
+
+    l4 = tk.Label(win, text="Exam marks").pack()
+    e3 = tk.Entry(win)
+    e3.pack()
+
+    addB = tk.Button(win, text="Submit and Add", command=AppendToFile).pack(pady=10)
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
 navbar_frame = tk.Frame(root, bg="#A167DC", width=150)

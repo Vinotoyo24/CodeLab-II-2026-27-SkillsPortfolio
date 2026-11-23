@@ -278,6 +278,20 @@ def UpdateRecord():
     ShowStudentsAll()
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
+def DeleteRecord():
+    dialog = simpledialog.askstring("Delete", "Enter Number ID:")
+
+    with open("studentMarks.txt") as filehandler:
+        lines = filehandler.read().splitlines()
+
+    for i, line in enumerate(lines[1:], 1):
+        if line.split(",")[0].strip() == dialog:
+            print(lines[i])
+            validate = messagebox.askyesno(title="Deleting a Record", 
+                                           message=f"Deleting Forever:\n{lines[i]}")
+            return
+
+#---------------------------------------------------------------------------------------------------------------------------------------------
 # Navigation Frame Bar --------------
 navbar_frame = tk.Frame(root, bg="#A167DC", width=150)
 navbar_frame.pack(side=tk.LEFT, fill="y")
@@ -319,7 +333,11 @@ b6.place(x=10, y=250)
 
 b7 = tk.Button(navbar_frame, text="Update Record", width=16,
                command=UpdateRecord)
-b7.place(x=10, y=290)
+b7.place(x=10, y=300)
+
+b8 = tk.Button(navbar_frame, text="Delete Record", width=16,
+               command=DeleteRecord)
+b8.place(x=10, y=350)
 
 
 #----------------------------------------

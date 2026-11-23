@@ -125,9 +125,12 @@ def open_adding_window():
         entry.config(fg="red")
 
     def AppendToFile():
+
+        # Makes Sure every iteration resets each entry text color to black
         for entry in (e1, e2, c1, c2, c3):
             entry.config(fg="black")
 
+        # Validates Form input of the First Entry for | Number ID Appending
         try:
             numberID = int(e1.get())
             if not 1000 <= (numberID) <= 9999:
@@ -136,12 +139,13 @@ def open_adding_window():
             show_error(e1)
             return
 
+        # Validates Form input of the Second Entry for | Student Name Appending
         studentName = e2.get().strip()
         if len(studentName) < 2:
             show_error(e2)
             return
 
-                # Coursework 1
+        # Coursework 1 Validations
         try:
             cw1 = int(c1.get())
             if not 0 <= cw1 <= 20:
@@ -150,7 +154,7 @@ def open_adding_window():
             show_error(c1, "Invalid")
             return
 
-        # Coursework 2
+        # Coursework 2 Validations
         try:
             cw2 = int(c2.get())
             if not 0 <= cw2 <= 20:
@@ -159,7 +163,7 @@ def open_adding_window():
             show_error(c2, "Invalid")
             return
 
-        # Coursework 3
+        # Coursework 3 Validations
         try:
             cw3 = int(c3.get())
             if not 0 <= cw3 <= 20:
@@ -171,6 +175,7 @@ def open_adding_window():
         for entry in (e1, e2, c1, c2, c3):
             entry.config(fg="black")
 
+        # Validates Form input of the Third Entry for | Exam Marks Appending
         try:
             exam = int(e3.get())
             if not 0 <= exam <= 100:
@@ -179,11 +184,15 @@ def open_adding_window():
             show_error(e3)
             return
 
+        # All input are added to a list
         results = [numberID, studentName, cw1, cw2, cw3, exam]
+        #fix formatting issues before being added to Student Marks Records text file.
         line = ", ".join(str(r) for r in results)
 
+        # Appends New Student
         with open("studentMarks.txt", 'a') as file_handler:
             file_handler.write(line + "\n")
+        win.destroy()
 
     win = tk.Toplevel(root)
     win.geometry('300x300')
@@ -215,37 +224,47 @@ def open_adding_window():
     addB = tk.Button(win, text="Submit and Add", command=AppendToFile).pack(pady=10)
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
+# Navigation Frame Bar --------------
 navbar_frame = tk.Frame(root, bg="#A167DC", width=150)
 navbar_frame.pack(side=tk.LEFT, fill="y")
 navbar_frame.pack_propagate(False)
 
+# View All Records Button
 b1 = tk.Button(navbar_frame, text="View All Records",
                command=ShowStudentsAll)
 b1.place(x=10, y=15)
 
+# Search Entry
 e1 = tk.Entry(navbar_frame, width=15)
 e1.place(x=10, y=55)
 
+# Submit Search Entry Button 
 b2 = tk.Button(navbar_frame, text="Search Record",
                command=searchRecord)
 b2.place(x=10, y=82)
 
+# Show Highest Score Button
 b3 = tk.Button(navbar_frame, text="Show Highest Score",
                command=ShowHighest)
 b3.place(x=10, y=125)
 
+# Show Lowest Score Button
 b4 = tk.Button(navbar_frame, text="Show Lowest Score",
                command=ShowLowest)
 b4.place(x=10, y=157)
 
+# Sort Records Button
 b5 = tk.Button(navbar_frame, text="Sort Records", width=16,
                command=SortStudents)
 b5.place(x=10, y=200)
 
-b6 = tk.Button(navbar_frame, text="Add Student", width=16)
+# Add Students Records
+b6 = tk.Button(navbar_frame, text="Add Student", width=16,
+               command=open_adding_window)
 b6.place(x=10, y=250)
 
 
+#----------------------------------------
 main_frame = tk.Frame(root)
 main_frame.pack(side=tk.LEFT, fill="both", expand=True)
 
